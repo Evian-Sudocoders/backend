@@ -1,76 +1,194 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
   version: 1.0.0
-  title: myapp
-  description: My cool app
-basePath: /api/v1
+  title: Evian
+  description: Backend for Evian
+servers:
+  - url: /api/v1
 tags:
-  - name: Examples
-    description: Simple example endpoints
-  - name: Specification
-    description: The swagger API specification
-
-consumes:
-  - application/json
-produces:
-  - application/json
-
-
-definitions:
-  ExampleBody:
-    type: object
-    title: example
-    required:
-      - name
-    properties:
-      name:
-        type: string
-        example: no_stress
+  - name: Auth
+    description: Authentication endpoints
+  # - name: User
+  #   description: User endpoints
+  # - name: Station
+  #   description: Station endpoints
+  # - name: Order
+  #   description: Order endpoints
 
 paths:
-  /examples:
+  /auth/getUserDetails:
     get:
       tags:
-        - Examples
-      description: Fetch all examples
+        - Auth
+      security:
+        - Bearer: []
+      summary: Get user details
+      description: Get user details
       responses:
         200:
-          description: Returns all examples
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getUserDetailsResponse'
+  /auth/getStationDetails:
+    get:
+      tags:
+        - Auth
+      security:
+        - Bearer: []
+      summary: Get station details
+      description: Get station details
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getStationDetailsResponse'
+  /auth/signupUser:
     post:
       tags:
-        - Examples
-      description: Create a new example
-      parameters:
-        - name: example
-          in: body
-          description: an example
-          required: true
-          schema: 
-            $ref: "#/definitions/ExampleBody"
+        - Auth
+      security:
+        - Bearer: []
+      summary: Signup a new user
+      description: Signup a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupUser'
       responses:
         200:
-          description: Returns all examples
-
-  /examples/{id}:
-    get:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupUserResponse'
+  /auth/signupStation:
+    post:
       tags:
-        - Examples
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: The id of the example to retrieve
-          type: integer
+        - Auth
+      security:
+        - Bearer: []
+      summary: Signup a new station
+      description: Signup a new station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupStation'
       responses:
         200:
-          description: Return the example with the specified id
-        404:
-          description: Example not found
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupStationResponse'
 
-  /spec:
-    get:
-      tags:
-        - Specification
-      responses:
-        200:
-          description: Return the API specification
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Provide a valid JWT token
+  schemas:
+    getUserDetailsResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        createdAt:
+          type: object
+          properties:
+            _seconds:
+              type: integer
+            _nanoseconds:
+              type: integer
+        city:
+          type: string
+        state:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+    getStationDetailsResponse:
+      type: object
+      properties:
+        location:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: object
+          properties:
+            _seconds:
+              type: integer
+            _nanoseconds:
+              type: integer
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+    SignupUser:
+      type: object
+      required:
+        - name
+        - email
+        - state
+        - city
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+    SignupUserResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    SignupStation:
+      type: object
+      required:
+        - name
+        - email
+        - address
+        - location
+        - state
+        - city
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        location:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+    SignupStationResponse:
+      type: object
+      properties:
+        message:
+          type: string
