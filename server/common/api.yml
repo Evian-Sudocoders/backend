@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   version: 1.0.0
   title: Evian
-  description: Backend for Evian
+  description: Documentation for Evian
 servers:
   - url: /api/v1
 tags:
@@ -31,14 +31,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/getUserDetailsResponse'
-  /auth/getStationDetails:
+  /station/{stationId}:
     get:
       tags:
-        - Auth
-      security:
-        - Bearer: []
+        - Station
       summary: Get station details
       description: Get station details
+      parameters:
+        - name: stationId
+          in: path
+          description: The id of station whose details is to be retrieved
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: Success
@@ -110,10 +115,10 @@ paths:
       responses:
         200:
           description: Success
-          # content:
-          #   application/json:
-          #     schema:
-          #       $ref: '#/components/schemas/getStationDetailsResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getAllStationDetailsResponse'
 
 components:
   securitySchemes:
@@ -131,9 +136,9 @@ components:
           type: object
           properties:
             _seconds:
-              type: integer
+              type: number
             _nanoseconds:
-              type: integer
+              type: number
         city:
           type: string
         state:
@@ -143,30 +148,6 @@ components:
         name:
           type: string
         profilePicture:
-          type: string
-    getStationDetailsResponse:
-      type: object
-      properties:
-        location:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        name:
-          type: string
-        createdAt:
-          type: object
-          properties:
-            _seconds:
-              type: integer
-            _nanoseconds:
-              type: integer
-        email:
-          type: string
-        phone:
-          type: string
-        address:
           type: string
     SignupUser:
       type: object
@@ -220,3 +201,45 @@ components:
       properties:
         message:
           type: string
+    getStationDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        location:
+          type: string
+        chargingPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: number
+              capacity:
+                type: number
+              cost:
+                type: number
+    getAllStationDetailsResponse:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              address:
+                type: string
+              numberOfChargingPoints:
+                type: number
+              minCost:
+                type: number
+              maxCost:
+                type: number

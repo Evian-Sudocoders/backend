@@ -57,15 +57,6 @@ export class Controller {
       next(err);
     }
   }
-
-  async getStationDetails(req, res, next) {
-    try {
-      const station = await AuthService.getStation(req.user.uid);
-      res.status(200).json(station);
-    } catch (err) {
-      next(err);
-    }
-  }
 }
 
 export default new Controller();

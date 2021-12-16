@@ -30,7 +30,33 @@ class StationService {
       }
       return stationData;
     } catch (error) {
-      l.error('[CHEF: GET ALL STATIONS OF A CITY]', error);
+      l.error('[STATION: GET ALL STATIONS OF A CITY]', error);
+      throw error;
+    }
+  }
+
+  async getStationDetails(stationId) {
+    try {
+      const station = await this.stationCollectionRef.doc(stationId).get();
+      if (station.exists) {
+        const chargingPoints = await this.stationCollectionRef
+          .doc(station.id)
+          .collection('chargingPoints')
+          .orderBy('index', 'asc')
+          .get();
+        const chargingPointsData = chargingPoints.docs.map((doc) => doc.data());
+        return {
+          id: station.id,
+          name: station.data().name,
+          address: station.data().address,
+          location: station.data().location,
+          chargingPoints: chargingPointsData,
+        };
+      } else {
+        throw { status: 402, message: 'Station not found' };
+      }
+    } catch (error) {
+      l.error('[STATION: GET STATION DETAILS]', error);
       throw error;
     }
   }
