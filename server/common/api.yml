@@ -10,8 +10,8 @@ tags:
     description: Authentication endpoints
   # - name: User
   #   description: User endpoints
-  # - name: Station
-  #   description: Station endpoints
+  - name: Station
+    description: Station endpoints
   # - name: Order
   #   description: Order endpoints
 
@@ -88,6 +88,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SignupStationResponse'
+  /station/{state}/{city}:
+    get:
+      tags:
+        - Station
+      summary: Get all station details
+      description: Get all stations of a particular state and city
+      parameters:
+        - name: state
+          in: path
+          description: The state whose stations are to be retrieved
+          required: true
+          schema:
+            type: string
+        - name: city
+          in: path
+          description: The city whose stations are to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          # content:
+          #   application/json:
+          #     schema:
+          #       $ref: '#/components/schemas/getStationDetailsResponse'
 
 components:
   securitySchemes:
