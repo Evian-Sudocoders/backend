@@ -20,7 +20,9 @@
     "express": "^4.17.1",
     "express-openapi-validator": "^4.13.4",
     "firebase-admin": "^10.0.0",
+    "nanoid": "^3.1.30",
     "pino": "^6.10.0",
+    "razorpay": "^2.8.0",
     "swagger-express-middleware": "^4.0.2"
   },
   "devDependencies": {
