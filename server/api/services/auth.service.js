@@ -13,6 +13,8 @@ class AuthService {
         state,
         city,
         email,
+        profilePicture:
+          'https://s3-alpha-sig.figma.com/img/add1/75d2/10c497455f79cd54356f8b1580320962?Expires=1640563200&Signature=ZN-bH~otrw1Bp5SBdME9woz597ncstqa5rNsHPhQpoLPhKkrU6s6BHhwzj1UdVRwqiKwVRgyUmkCuoXQ7jPfNFbdPUXpWpbGevUcpxHwxwLMsmuwdVypt1DfEFTviTvWK3rfbYG-WinF-JOAe-P1nMXX7FaUy3t1~v~SIc1JttLSQ09S-sMDl8b7~WT~YDB27ibKOrUpU5U1RMk-9nSMWe3yRHWbuubuE-lLc2OgICSxJzZcUpd2JfPQf0o7hEJby0NiRIoP8NIB23EVSikcLMdy0ZGHkYGzv2btKE0sxpyib6Co~Z5Sxs8acrUlOLpzInNNoGSEt3KqCAefjiawaA__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA',
         createdAt: new Date(),
       });
       return { message: 'User registered successfully' };
