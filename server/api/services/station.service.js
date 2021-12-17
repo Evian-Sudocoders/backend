@@ -42,9 +42,14 @@ class StationService {
         const chargingPoints = await this.stationCollectionRef
           .doc(station.id)
           .collection('chargingPoints')
-          .orderBy('index', 'asc')
           .get();
-        const chargingPointsData = chargingPoints.docs.map((doc) => doc.data());
+        const chargingPointsData = chargingPoints.docs.map((doc) => {
+          return {
+            index: parseInt(doc.id),
+            capacity: doc.data().capacity,
+            cost: doc.data().cost,
+          };
+        });
         return {
           id: station.id,
           name: station.data().name,
@@ -57,6 +62,59 @@ class StationService {
       }
     } catch (error) {
       l.error('[STATION: GET STATION DETAILS]', error);
+      throw error;
+    }
+  }
+
+  async updateAddress(uid, address, location) {
+    try {
+      await this.stationCollectionRef.doc(uid).update({
+        address: address,
+        location: location,
+      });
+      return { message: 'Address updated successfully' };
+    } catch (error) {
+      l.error('[STATION: UPDATE ADDRESS]', error);
+      throw error;
+    }
+  }
+
+  async addChargingPoints(stationId, chargingPoints) {
+    try {
+      const chargingPointsCollectionRef = await this.stationCollectionRef
+        .doc(stationId)
+        .collection('chargingPoints');
+      chargingPoints.map(async (chargingPoint) => {
+        await chargingPointsCollectionRef
+          .doc(chargingPoint.index.toString())
+          .set({
+            capacity: chargingPoint.capacity,
+            cost: chargingPoint.cost,
+          });
+      });
+      return { message: 'Charging points added successfully' };
+    } catch (error) {
+      l.error('[STATION: ADD CHARGING POINTS]', error);
+      throw error;
+    }
+  }
+
+  async updateChargingPoints(stationId, chargingPoints) {
+    try {
+      const chargingPointsCollectionRef = await this.stationCollectionRef
+        .doc(stationId)
+        .collection('chargingPoints');
+      chargingPoints.map(async (chargingPoint) => {
+        await chargingPointsCollectionRef
+          .doc(chargingPoint.index.toString())
+          .update({
+            capacity: chargingPoint.capacity,
+            cost: chargingPoint.cost,
+          });
+      });
+      return { message: 'Charging points updated successfully' };
+    } catch (error) {
+      l.error('[STATION: UPDATE CHARGING POINTS]', error);
       throw error;
     }
   }

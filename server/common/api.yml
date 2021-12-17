@@ -30,27 +30,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getUserDetailsResponse'
-  /station/{stationId}:
-    get:
-      tags:
-        - Station
-      summary: Get station details
-      description: Get station details
-      parameters:
-        - name: stationId
-          in: path
-          description: The id of station whose details is to be retrieved
-          required: true
-          schema:
-            type: string
-      responses:
-        200:
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/getStationDetailsResponse'
+                $ref: '#/components/schemas/GetUserDetailsResponse'
   /auth/signupUser:
     post:
       tags:
@@ -71,7 +51,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignupUserResponse'
+                $ref: '#/components/schemas/SuccessResponse'
   /auth/signupStation:
     post:
       tags:
@@ -92,7 +72,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SignupStationResponse'
+                $ref: '#/components/schemas/SuccessResponse'
+  /station/{stationId}:
+    get:
+      tags:
+        - Station
+      summary: Get station details
+      description: Get station details
+      parameters:
+        - name: stationId
+          in: path
+          description: The id of station whose details is to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStationDetailsResponse'
   /station/{state}/{city}:
     get:
       tags:
@@ -118,7 +118,69 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/getAllStationDetailsResponse'
+                $ref: '#/components/schemas/GetAllStationDetailsResponse'
+  /station/updateAddress:
+    put:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Update station address and location
+      description: Update station address and location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddress'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /station/chargingPoints:
+    post:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Add charging points to a station
+      description: Add charging points to a station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddChargingPoints'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+    put:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Update charging points of a station
+      description: Update charging points of a station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddChargingPoints'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
 
 components:
   securitySchemes:
@@ -127,7 +189,7 @@ components:
       scheme: bearer
       description: Provide a valid JWT token
   schemas:
-    getUserDetailsResponse:
+    GetUserDetailsResponse:
       type: object
       properties:
         email:
@@ -167,11 +229,6 @@ components:
           type: string
         city:
           type: string
-    SignupUserResponse:
-      type: object
-      properties:
-        message:
-          type: string
     SignupStation:
       type: object
       required:
@@ -196,12 +253,7 @@ components:
           type: string
         city:
           type: string
-    SignupStationResponse:
-      type: object
-      properties:
-        message:
-          type: string
-    getStationDetailsResponse:
+    GetStationDetailsResponse:
       type: object
       properties:
         id:
@@ -223,7 +275,7 @@ components:
                 type: number
               cost:
                 type: number
-    getAllStationDetailsResponse:
+    GetAllStationDetailsResponse:
       type: object
       properties:
         stations:
@@ -243,3 +295,34 @@ components:
                 type: number
               maxCost:
                 type: number
+    UpdateAddress:
+      type: object
+      required:
+        - address
+        - location
+      properties:
+        address:
+          type: string
+        location:
+          type: string
+    AddChargingPoints:
+      type: object
+      required:
+        - chargingPoints
+      properties:
+        chargingPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: number
+              capacity:
+                type: number
+              cost:
+                type: number
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
