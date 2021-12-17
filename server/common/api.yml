@@ -8,8 +8,8 @@ servers:
 tags:
   - name: Auth
     description: Authentication endpoints
-  # - name: User
-  #   description: User endpoints
+  - name: User
+    description: User endpoints
   - name: Station
     description: Station endpoints
   # - name: Order
@@ -66,6 +66,27 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SignupStation'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /user/updateProfilePicture:
+    put:
+      tags:
+        - User
+      security:
+        - Bearer: []
+      summary: Update user profile picture
+      description: Update user profile picture
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfilePicture'
       responses:
         200:
           description: Success
@@ -252,6 +273,13 @@ components:
         state:
           type: string
         city:
+          type: string
+    UpdateProfilePicture:
+      type: object
+      required:
+        - imageUrl
+      properties:
+        imageUrl:
           type: string
     GetStationDetailsResponse:
       type: object
