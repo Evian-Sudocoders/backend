@@ -19,6 +19,15 @@ export class Controller {
       next(error);
     }
   }
+
+  async getUserBookings(req, res, next) {
+    try {
+      const bookings = await UserService.getUserBookings(req.user.uid);
+      res.status(200).json({ bookings });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new Controller();

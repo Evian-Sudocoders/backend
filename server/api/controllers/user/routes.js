@@ -4,4 +4,5 @@ import controller from './controller';
 
 export default express
   .Router()
-  .put('/updateProfilePicture', authHandler, controller.updateProfilePicture);
+  .put('/updateProfilePicture', authHandler, controller.updateProfilePicture)
+  .get('/bookings', authHandler, controller.getUserBookings);

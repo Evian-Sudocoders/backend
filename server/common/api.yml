@@ -94,6 +94,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
+  /user/bookings:
+    get:
+      tags:
+        - User
+      security:
+        - Bearer: []
+      summary: Get user bookings
+      description: Get user bookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserBookingsResponse'
   /station/{stationId}:
     get:
       tags:
@@ -322,6 +337,37 @@ components:
       properties:
         imageUrl:
           type: string
+    GetUserBookingsResponse:
+      type: object
+      properties:
+        bookings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              stationName:
+                type: string
+              address:
+                type: string
+              slots:
+                type: array
+                items:
+                  type: number
+              createdAt:
+                type: object
+                properties:
+                  _seconds:
+                    type: number
+                  _nanoseconds:
+                    type: number
+              chargingPoint:
+                type: number
+              totalAmount:
+                type: number
+              status:
+                type: string
     GetStationDetailsResponse:
       type: object
       properties:
