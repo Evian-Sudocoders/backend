@@ -12,8 +12,8 @@ tags:
     description: User endpoints
   - name: Station
     description: Station endpoints
-  # - name: Order
-  #   description: Order endpoints
+  - name: Booking
+    description: Booking endpoints
 
 paths:
   /auth/getUserDetails:
@@ -202,7 +202,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
-
+  /booking/initializeBooking:
+    post:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Initialize a booking
+      description: Initialize a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitializeBooking'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeBookingResponse'
+  /booking/verifyBooking:
+    post:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Verify a booking
+      description: Verify a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyBooking'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
 components:
   securitySchemes:
     Bearer:
@@ -354,3 +395,78 @@ components:
       properties:
         message:
           type: string
+    InitializeBooking:
+      type: object
+      required:
+        - stationId
+        - vehicleNumber
+        - chargingPoint
+        - slots
+        - charges
+      properties:
+        stationId:
+          type: string
+        vehicleNumber:
+          type: string
+        chargingPoint:
+          type: number
+        slots:
+          type: array
+          items:
+            type: number
+        charges:
+          type: number
+    InitializeBookingResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        bookingId:
+          type: string
+    VerifyBooking:
+      type: object
+      required:
+        - razorpayPaymentId
+        - razorpaySignature
+        - orderId
+        - bookingId
+      properties:
+        razorpayPaymentId:
+          type: string
+        razorpaySignature:
+          type: string
+        orderId:
+          type: string
+        bookingId:
+          type: string
+    # GetOrdersResponse:
+    #   type: array
+    #   items:
+    #     type: object
+    #     properties:
+    #       id:
+    #         type: string
+    #       chefName:
+    #         type: string
+    #       userName:
+    #         type: string
+    #       totalAmount:
+    #         type: integer
+    #       weeklySubscriptionAmount:
+    #         type: integer
+    #       numberOfWeeks:
+    #         type: integer
+    #       numberOfPeople:
+    #         type: integer
+    #       userAddress:
+    #         type: string
+    #       chefAddress:
+    #         type: string
+    #       chefProfilePicture:
+    #         type: string
+    #       type:
+    #         type: string
+    #       isVeg:
+    #         type: boolean
+    #       startDate:
+    #         type: string
