@@ -3,6 +3,7 @@ import l from '../../common/logger';
 
 class StationService {
   stationCollectionRef = database.collection('stations');
+  bookingCollectionRef = database.collection('bookings');
 
   async getAllStations(state, city) {
     try {
@@ -115,6 +116,21 @@ class StationService {
       return { message: 'Charging points updated successfully' };
     } catch (error) {
       l.error('[STATION: UPDATE CHARGING POINTS]', error);
+      throw error;
+    }
+  }
+
+  async getStationBookings(stationId) {
+    try {
+      const bookings = await this.bookingCollectionRef
+        .where('stationId', '==', stationId)
+        .get();
+      if (bookings.empty) {
+        return [];
+      }
+      return bookings.docs.map((doc) => doc.data());
+    } catch (error) {
+      l.error('[STATION: GET STATION BOOKINGS]', error);
       throw error;
     }
   }

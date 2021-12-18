@@ -183,6 +183,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAllStationDetailsResponse'
+  /station/bookings:
+    get:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Get station bookings
+      description: Get station bookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStationBookingsResponse'
   /station/updateAddress:
     put:
       tags:
@@ -445,6 +460,47 @@ components:
                 type: number
               maxCost:
                 type: number
+    GetStationBookingsResponse:
+      type: object
+      properties:
+        bookings:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+              userName:
+                type: string
+              stationId:
+                type: string
+              orderId:
+                type: string
+              vehicleNumber:
+                type: string
+              paid:
+                type: boolean
+              stationName:
+                type: string
+              address:
+                type: string
+              slots:
+                type: array
+                items:
+                  type: number
+              createdAt:
+                type: object
+                properties:
+                  _seconds:
+                    type: number
+                  _nanoseconds:
+                    type: number
+              chargingPoint:
+                type: number
+              totalAmount:
+                type: number
+              status:
+                type: string
     UpdateAddress:
       type: object
       required:

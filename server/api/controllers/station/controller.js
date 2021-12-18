@@ -79,6 +79,15 @@ export class Controller {
       next(error);
     }
   }
+
+  async getStationBookings(req, res, next) {
+    try {
+      const bookings = await StationService.getStationBookings(req.user.uid);
+      res.status(200).json({ bookings });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new Controller();
