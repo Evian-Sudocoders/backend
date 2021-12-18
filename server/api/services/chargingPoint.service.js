@@ -15,7 +15,9 @@ class ChargingPointService {
       }
       let bookedSlots = [];
       for (let booking of bookings.docs) {
-        bookedSlots = [...bookedSlots, ...booking.data().slots];
+        if (booking.data().paid) {
+          bookedSlots = [...bookedSlots, ...booking.data().slots];
+        }
       }
       return bookedSlots;
     } catch (error) {
