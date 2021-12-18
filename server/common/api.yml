@@ -10,6 +10,8 @@ tags:
     description: Authentication endpoints
   - name: User
     description: User endpoints
+  - name: Charging Point
+    description: Charging Point endpoints
   - name: Station
     description: Station endpoints
   - name: Booking
@@ -109,6 +111,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUserBookingsResponse'
+  /chargingPoint/bookedSlots/{stationId}/{index}:
+    get:
+      tags:
+        - Charging Point
+      summary: Get charging point's booked slots
+      description: Get charging point's booked slots
+      parameters:
+        - name: stationId
+          in: path
+          description: id of the station
+          required: true
+          schema:
+            type: string
+        - name: index
+          in: path
+          description: index of charging point
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBookedSlotsResponse'
   /station/{stationId}:
     get:
       tags:
@@ -368,6 +396,13 @@ components:
                 type: number
               status:
                 type: string
+    GetBookedSlotsResponse:
+      type: object
+      properties:
+        bookedSlots:
+          type: array
+          items:
+            type: number
     GetStationDetailsResponse:
       type: object
       properties:
