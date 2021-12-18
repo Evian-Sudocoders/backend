@@ -46,11 +46,15 @@ class AuthService {
   async getUser(uid) {
     try {
       const user = await this.userCollectionRef.doc(uid).get();
-      const station = await this.userCollectionRef.doc(uid).get();
       if (user.exists) {
         return user.data();
-      } else if (station.exists) {
-        return station.data();
+      }
+
+      const station = await this.stationCollectionRef.doc(uid).get();
+      if (station.exists) {
+        const datatoReturn = station.data();
+        datatoReturn.isStation = true;
+        return datatoReturn;
       } else {
         throw { status: 402, message: 'User not found' };
       }
