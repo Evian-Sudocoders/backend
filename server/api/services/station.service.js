@@ -11,6 +11,9 @@ class StationService {
         .where('state', '==', state)
         .where('city', '==', city)
         .get();
+      if (stations.empty) {
+        return [];
+      }
       let stationData = [];
       for (let station of stations.docs) {
         const chargingPointData = await this.stationCollectionRef
@@ -23,9 +26,9 @@ class StationService {
           name: station.data().name,
           address: station.data().address,
           numberOfChargingPoints: chargingPointData.docs.length,
-          minCost: chargingPointData.docs[0].data().cost,
+          minCost: chargingPointData.docs[0]?.data().cost,
           maxCost:
-            chargingPointData.docs[chargingPointData.docs.length - 1].data()
+            chargingPointData.docs[chargingPointData.docs.length - 1]?.data()
               .cost,
         });
       }
