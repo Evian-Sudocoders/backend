@@ -56,6 +56,20 @@ class AuthService {
       throw error;
     }
   }
+
+  async getStation(stationId) {
+    try {
+      const station = await this.stationCollectionRef.doc(stationId).get();
+      if (station.exists) {
+        return station.data();
+      } else {
+        throw { status: 402, message: 'Station not found' };
+      }
+    } catch (error) {
+      l.error('[GET STATION]', error);
+      throw error;
+    }
+  }
 }
 
 export default new AuthService();

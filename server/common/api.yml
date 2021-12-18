@@ -33,6 +33,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetUserDetailsResponse'
+  /auth/getStationDetails:
+    get:
+      tags:
+        - Auth
+      security:
+        - Bearer: []
+      summary: Get station details
+      description: Get station details
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAuthStationDetailsResponse'
   /auth/signupUser:
     post:
       tags:
@@ -345,6 +360,30 @@ components:
         name:
           type: string
         profilePicture:
+          type: string
+    GetAuthStationDetailsResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        createdAt:
+          type: object
+          properties:
+            _seconds:
+              type: number
+            _nanoseconds:
+              type: number
+        city:
+          type: string
+        state:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        location:
           type: string
     SignupUser:
       type: object
