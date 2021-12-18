@@ -39,6 +39,7 @@ class BookingService {
         totalAmount: charges,
         createdAt: new Date(),
         paid: false,
+        status: 'pending',
       });
       return { orderId: order.id, bookingId: bookingDocumentRef.id };
     } catch (err) {
@@ -75,6 +76,22 @@ class BookingService {
       throw { status: 402, message: 'Payment verification failed' };
     } catch (err) {
       l.error('[BOOKING: VERIFY BOOKING]', err);
+      throw err;
+    }
+  }
+
+  async changeStatusOfABooking(bookingId) {
+    try {
+      const booking = await this.bookingCollectionRef.doc(bookingId).get();
+      if (!booking.exists) {
+        throw { status: 402, message: 'Booking not found, please try again' };
+      }
+      await booking.ref.update({
+        status: 'success',
+      });
+      return { message: 'Booking updated successfully' };
+    } catch (err) {
+      l.error('[BOOKING: CHANGE STATUS]', err);
       throw err;
     }
   }

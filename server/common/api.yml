@@ -302,6 +302,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SuccessResponse'
+  /booking/{bookingId}:
+    put:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Update a booking status
+      description: Update a booking status
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
 components:
   securitySchemes:
     Bearer:
@@ -576,34 +591,3 @@ components:
           type: string
         bookingId:
           type: string
-    # GetOrdersResponse:
-    #   type: array
-    #   items:
-    #     type: object
-    #     properties:
-    #       id:
-    #         type: string
-    #       chefName:
-    #         type: string
-    #       userName:
-    #         type: string
-    #       totalAmount:
-    #         type: integer
-    #       weeklySubscriptionAmount:
-    #         type: integer
-    #       numberOfWeeks:
-    #         type: integer
-    #       numberOfPeople:
-    #         type: integer
-    #       userAddress:
-    #         type: string
-    #       chefAddress:
-    #         type: string
-    #       chefProfilePicture:
-    #         type: string
-    #       type:
-    #         type: string
-    #       isVeg:
-    #         type: boolean
-    #       startDate:
-    #         type: string

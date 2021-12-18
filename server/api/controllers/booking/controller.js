@@ -46,6 +46,17 @@ export class Controller {
       next(error);
     }
   }
+
+  async changeStatusOfABooking(req, res, next) {
+    try {
+      const response = await BookingService.changeStatusOfABooking(
+        req.params.bookingId
+      );
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new Controller();
