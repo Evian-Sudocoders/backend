@@ -15,7 +15,7 @@ export class Controller {
         throw { status: 402, message: 'Missing required fields' };
       }
       const reponse = await BookingService.createBooking(
-        req.user.id,
+        req.user.uid,
         stationId,
         vehicleNumber,
         charges,
