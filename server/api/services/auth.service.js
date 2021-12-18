@@ -46,27 +46,16 @@ class AuthService {
   async getUser(uid) {
     try {
       const user = await this.userCollectionRef.doc(uid).get();
+      const station = await this.userCollectionRef.doc(uid).get();
       if (user.exists) {
         return user.data();
+      } else if (station.exists) {
+        return station.data();
       } else {
         throw { status: 402, message: 'User not found' };
       }
     } catch (error) {
       l.error('[GET USER]', error);
-      throw error;
-    }
-  }
-
-  async getStation(stationId) {
-    try {
-      const station = await this.stationCollectionRef.doc(stationId).get();
-      if (station.exists) {
-        return station.data();
-      } else {
-        throw { status: 402, message: 'Station not found' };
-      }
-    } catch (error) {
-      l.error('[GET STATION]', error);
       throw error;
     }
   }
