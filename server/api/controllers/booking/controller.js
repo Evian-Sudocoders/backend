@@ -35,7 +35,7 @@ export class Controller {
       if (!razorpayPaymentId || !razorpaySignature || !orderId || !bookingId) {
         throw { status: 402, message: 'Payment verification failed' };
       }
-      const response = await OrderService.verifyOrder(
+      const response = await BookingService.verifyBooking(
         razorpayPaymentId,
         orderId,
         razorpaySignature,
