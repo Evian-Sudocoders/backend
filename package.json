@@ -20,13 +20,15 @@
     "express": "^4.17.1",
     "express-openapi-validator": "^4.13.4",
     "firebase-admin": "^10.0.0",
+    "nanoid": "^3.1.30",
     "pino": "^6.10.0",
+    "razorpay": "^2.8.0",
     "swagger-express-middleware": "^4.0.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
     "@babel/preset-env": "^7.12.11",

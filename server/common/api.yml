@@ -1,76 +1,593 @@
-swagger: "2.0"
+openapi: 3.0.1
 info:
   version: 1.0.0
-  title: myapp
-  description: My cool app
-basePath: /api/v1
+  title: Evian
+  description: Documentation for Evian
+servers:
+  - url: /api/v1
 tags:
-  - name: Examples
-    description: Simple example endpoints
-  - name: Specification
-    description: The swagger API specification
-
-consumes:
-  - application/json
-produces:
-  - application/json
-
-
-definitions:
-  ExampleBody:
-    type: object
-    title: example
-    required:
-      - name
-    properties:
-      name:
-        type: string
-        example: no_stress
+  - name: Auth
+    description: Authentication endpoints
+  - name: User
+    description: User endpoints
+  - name: Charging Point
+    description: Charging Point endpoints
+  - name: Station
+    description: Station endpoints
+  - name: Booking
+    description: Booking endpoints
 
 paths:
-  /examples:
+  /auth/getUserDetails:
     get:
       tags:
-        - Examples
-      description: Fetch all examples
+        - Auth
+      security:
+        - Bearer: []
+      summary: Get user details
+      description: Get user details
       responses:
         200:
-          description: Returns all examples
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserDetailsResponse'
+  /auth/signupUser:
     post:
       tags:
-        - Examples
-      description: Create a new example
-      parameters:
-        - name: example
-          in: body
-          description: an example
-          required: true
-          schema: 
-            $ref: "#/definitions/ExampleBody"
+        - Auth
+      security:
+        - Bearer: []
+      summary: Signup a new user
+      description: Signup a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupUser'
       responses:
         200:
-          description: Returns all examples
-
-  /examples/{id}:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /auth/signupStation:
+    post:
+      tags:
+        - Auth
+      security:
+        - Bearer: []
+      summary: Signup a new station
+      description: Signup a new station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupStation'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /user/updateProfilePicture:
+    put:
+      tags:
+        - User
+      security:
+        - Bearer: []
+      summary: Update user profile picture
+      description: Update user profile picture
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfilePicture'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /user/bookings:
     get:
       tags:
-        - Examples
+        - User
+      security:
+        - Bearer: []
+      summary: Get user bookings
+      description: Get user bookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserBookingsResponse'
+  /chargingPoint/bookedSlots/{stationId}/{index}:
+    get:
+      tags:
+        - Charging Point
+      summary: Get charging point's booked slots
+      description: Get charging point's booked slots
       parameters:
-        - name: id
+        - name: stationId
           in: path
+          description: id of the station
           required: true
-          description: The id of the example to retrieve
-          type: integer
+          schema:
+            type: string
+        - name: index
+          in: path
+          description: index of charging point
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: Return the example with the specified id
-        404:
-          description: Example not found
-
-  /spec:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBookedSlotsResponse'
+  /station/{stationId}:
     get:
       tags:
-        - Specification
+        - Station
+      summary: Get station details
+      description: Get station details
+      parameters:
+        - name: stationId
+          in: path
+          description: The id of station whose details is to be retrieved
+          required: true
+          schema:
+            type: string
       responses:
         200:
-          description: Return the API specification
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStationDetailsResponse'
+  /station/{state}/{city}:
+    get:
+      tags:
+        - Station
+      summary: Get all station details
+      description: Get all stations of a particular state and city
+      parameters:
+        - name: state
+          in: path
+          description: The state whose stations are to be retrieved
+          required: true
+          schema:
+            type: string
+        - name: city
+          in: path
+          description: The city whose stations are to be retrieved
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllStationDetailsResponse'
+  /station/bookings:
+    get:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Get station bookings
+      description: Get station bookings
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetStationBookingsResponse'
+  /station/updateAddress:
+    put:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Update station address and location
+      description: Update station address and location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAddress'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /station/chargingPoints:
+    post:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Add charging points to a station
+      description: Add charging points to a station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddChargingPoints'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+    put:
+      tags:
+        - Station
+      security:
+        - Bearer: []
+      summary: Update charging points of a station
+      description: Update charging points of a station
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddChargingPoints'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /booking/initializeBooking:
+    post:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Initialize a booking
+      description: Initialize a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitializeBooking'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeBookingResponse'
+  /booking/verifyBooking:
+    post:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Verify a booking
+      description: Verify a booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyBooking'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+  /booking/{bookingId}:
+    put:
+      tags:
+        - Booking
+      security:
+        - Bearer: []
+      summary: Update a booking status
+      description: Update a booking status
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      description: Provide a valid JWT token
+  schemas:
+    GetUserDetailsResponse:
+      type: object
+      properties:
+        email:
+          type: string
+        createdAt:
+          type: object
+          properties:
+            _seconds:
+              type: number
+            _nanoseconds:
+              type: number
+        city:
+          type: string
+        state:
+          type: string
+        phone:
+          type: string
+        name:
+          type: string
+        profilePicture:
+          type: string
+    SignupUser:
+      type: object
+      required:
+        - name
+        - email
+        - state
+        - city
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+    SignupStation:
+      type: object
+      required:
+        - name
+        - email
+        - address
+        - location
+        - state
+        - city
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        location:
+          type: string
+        state:
+          type: string
+        city:
+          type: string
+    UpdateProfilePicture:
+      type: object
+      required:
+        - imageUrl
+      properties:
+        imageUrl:
+          type: string
+    GetUserBookingsResponse:
+      type: object
+      properties:
+        bookings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              stationName:
+                type: string
+              address:
+                type: string
+              slots:
+                type: array
+                items:
+                  type: number
+              createdAt:
+                type: object
+                properties:
+                  _seconds:
+                    type: number
+                  _nanoseconds:
+                    type: number
+              chargingPoint:
+                type: number
+              totalAmount:
+                type: number
+              status:
+                type: string
+    GetBookedSlotsResponse:
+      type: object
+      properties:
+        bookedSlots:
+          type: array
+          items:
+            type: number
+    GetStationDetailsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        address:
+          type: string
+        location:
+          type: string
+        chargingPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: number
+              capacity:
+                type: number
+              cost:
+                type: number
+    GetAllStationDetailsResponse:
+      type: object
+      properties:
+        stations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              address:
+                type: string
+              numberOfChargingPoints:
+                type: number
+              minCost:
+                type: number
+              maxCost:
+                type: number
+    GetStationBookingsResponse:
+      type: object
+      properties:
+        bookings:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+              userName:
+                type: string
+              stationId:
+                type: string
+              orderId:
+                type: string
+              vehicleNumber:
+                type: string
+              paid:
+                type: boolean
+              stationName:
+                type: string
+              address:
+                type: string
+              slots:
+                type: array
+                items:
+                  type: number
+              createdAt:
+                type: object
+                properties:
+                  _seconds:
+                    type: number
+                  _nanoseconds:
+                    type: number
+              chargingPoint:
+                type: number
+              totalAmount:
+                type: number
+              status:
+                type: string
+    UpdateAddress:
+      type: object
+      required:
+        - address
+        - location
+      properties:
+        address:
+          type: string
+        location:
+          type: string
+    AddChargingPoints:
+      type: object
+      required:
+        - chargingPoints
+      properties:
+        chargingPoints:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: number
+              capacity:
+                type: number
+              cost:
+                type: number
+    SuccessResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    InitializeBooking:
+      type: object
+      required:
+        - stationId
+        - vehicleNumber
+        - chargingPoint
+        - slots
+        - charges
+      properties:
+        stationId:
+          type: string
+        vehicleNumber:
+          type: string
+        chargingPoint:
+          type: number
+        slots:
+          type: array
+          items:
+            type: number
+        charges:
+          type: number
+    InitializeBookingResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        bookingId:
+          type: string
+    VerifyBooking:
+      type: object
+      required:
+        - razorpayPaymentId
+        - razorpaySignature
+        - orderId
+        - bookingId
+      properties:
+        razorpayPaymentId:
+          type: string
+        razorpaySignature:
+          type: string
+        orderId:
+          type: string
+        bookingId:
+          type: string

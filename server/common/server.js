@@ -21,6 +21,7 @@ export default class ExpressServer {
       process.env.OPENAPI_ENABLE_RESPONSE_VALIDATION.toLowerCase() === 'true'
     );
 
+    app.use(cors());
     app.use(bodyParser.json({ limit: process.env.REQUEST_LIMIT || '100kb' }));
     app.use(
       bodyParser.urlencoded({
@@ -40,8 +41,6 @@ export default class ExpressServer {
         ignorePaths: /.*\/spec(\/|$)/,
       })
     );
-
-    app.use(cors());
   }
 
   router(routes) {
