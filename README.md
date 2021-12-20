@@ -1,12 +1,11 @@
 <div align="center">
   <h1>EVIAN</h1>
   <p>
-    The Backend Repository for the
-    <a href="https://evian.azurewebsites.net/">
     Evian Website
+    <a href="https://evian.azurewebsites.net/">
+    API Doc
   </a>
   </p>
-  <br/>
 </div>
 
 ## What is Evian?
@@ -29,6 +28,7 @@ Here comes Evians, where users can schedule charging spaces, check available sta
 </li>
 </ul>
 <br/>
+
 ## Getting Started
 
 1. Fork the repository
@@ -55,6 +55,7 @@ npm run dev
 7. Open http://localhost:3000 to view the API documentation.
 
 <br/>
+
 ## Contributors
 
 - [Akash Gupta](https://github.com/akashgupta1909)
