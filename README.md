@@ -35,7 +35,7 @@ Here comes Evians, where users can schedule charging spaces, check available sta
 2. Clone the repository
 
 ```sh
-git clone https://github.com/IndieFoods/frontend.git
+git clone https://github.com/Evian-Sudocoders/frontend
 ```
 
 3. Open the folder containing the cloned repository
