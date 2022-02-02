@@ -15,7 +15,10 @@ class ChargingPointService {
       }
       let bookedSlots = [];
       for (let booking of bookings.docs) {
-        if (booking.data().paid) {
+        if (
+          booking.data().paid &&
+          compareDateOfSlots(booking.data().createdAt._seconds)
+        ) {
           bookedSlots = [...bookedSlots, ...booking.data().slots];
         }
       }
@@ -24,6 +27,19 @@ class ChargingPointService {
       l.error('[CHARGING POINT: GET BOOKED SLOTS]', error);
       throw error;
     }
+  }
+}
+
+function compareDateOfSlots(ts) {
+  let date = new Date(ts * 1000);
+  if (
+    date.getDate() === new Date().getDate() &&
+    date.getMonth() === new Date().getMonth() &&
+    date.getFullYear() === new Date().getFullYear()
+  ) {
+    return true;
+  } else {
+    return false;
   }
 }
 
